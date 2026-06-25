@@ -18,7 +18,7 @@ app = FastAPI(title="Address Book")
 
 #handle the exceptions
 @app.exception_handler(AddressNotFound)
-def address_not_found_handler(request: Request, exc: AddressNotFound):
+def address_not_found_handler(_request: Request, exc: AddressNotFound):
     return JSONResponse(status_code=404,
                         content={"detail":str(exc)}
     )

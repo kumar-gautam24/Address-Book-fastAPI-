@@ -9,6 +9,6 @@ class AddressError(Exception):
 
 
 class AddressNotFound(AddressError):
-     def __init__(self,address_id:int):
+     def __init__(self,address_id:int|str):
          self.address_id = address_id
          super().__init__(f"Address {address_id} not found")
