@@ -4,15 +4,15 @@ The service raises these; an app-level handler (main.py) translates them to HTTP
 """
 
 
-class ContactError(Exception):
-    """Base class for all domain errors in this app."""
+class AddressError(Exception):
     pass
 
 
-class ContactNotFound(ContactError):
-    """Raised by the service when a requested contact does not exist.
+class AddressNotFound(AddressError):
+     def __init__(self,address_id:int):
+         self.address_id = address_id
+         super().__init__(f"Address {address_id} not found")
 
-    TODO (you implement):
-      - store the missing id so the handler can build a useful message
-    """
-    pass
+class NoAddressFound(AddressError):
+    def __init__(self):
+        super().__init__("No address found")
