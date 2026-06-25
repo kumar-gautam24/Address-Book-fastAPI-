@@ -16,9 +16,9 @@ router = APIRouter(prefix="/address", tags=["address"])
 def create_address(body:AddressCreate):
     return service.create_address(body)
 
-@router.get("/nearby",response_model=list[AddressResponse])
-def get_nearby_address(latitude:float,longitude:float):
-    return  service.get_nearby_address(latitude,longitude)
+@router.get("/nearby", response_model=list[AddressResponse])
+def get_nearby_address(latitude: float, longitude: float, distance_km: float):
+    return service.get_nearby_address(latitude, longitude, distance_km)
 
 
 # get an address by id
