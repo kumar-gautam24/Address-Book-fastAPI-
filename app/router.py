@@ -20,6 +20,10 @@ def create_address(body:AddressCreate):
 def get_nearby_address(latitude: float, longitude: float, distance_km: float):
     return service.get_nearby_address(latitude, longitude, distance_km)
 
+@router.get("/nearby-by-city", response_model=list[AddressResponse])
+def get_nearby_by_city(city: str, distance_km: float):
+    return service.get_nearby_by_city(city, distance_km)
+
 
 # get an address by id
 @router.get("/{address_id}",response_model=AddressResponse)

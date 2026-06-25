@@ -36,6 +36,20 @@ def get_all() -> list[dict]:
         conn.close()
 
 
+def get_by_city(city: str) -> dict | None:
+    logger.info("Fetching address for city=%s", city)
+    conn = get_connection()
+    try:
+        cur = conn.execute(
+            "SELECT * FROM address_book WHERE city = ? LIMIT 1",
+            (city,),
+        )
+        row = cur.fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
 def get_by_id(address_id: int) -> dict | None:
     logger.info("Fetching address id=%s", address_id)
     conn = get_connection()

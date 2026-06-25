@@ -65,3 +65,18 @@ def get_nearby_address(latitude: float, longitude: float, distance_km: float) ->
     ]
     logger.info("Found %s address(es) within %.2fkm", len(results), distance_km)
     return results
+
+def get_nearby_by_city(city: str, distance_km: float) -> list[dict]:
+    logger.info("Searching addresses within %.2fkm of city=%s", distance_km, city)
+    anchor = repository.get_by_city(city)
+    if anchor is None:
+        logger.warning("City=%s not found in database", city)
+        raise AddressNotFound(city)
+    addresses = repository.get_all()
+    results = [
+        a for a in addresses
+        if a["id"] != anchor["id"]
+        and _haversine_km(anchor["latitude"], anchor["longitude"], a["latitude"], a["longitude"]) <= distance_km
+    ]
+    logger.info("Found %s address(es) within %.2fkm of %s", len(results), distance_km, city)
+    return results
