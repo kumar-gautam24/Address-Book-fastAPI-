@@ -1,26 +1,37 @@
 """Router layer: wiring + HTTP translation.
-
-Sync handlers (so blocking sqlite3 runs in the threadpool). No SQL, no business
-rules. Simple version: catch the domain error here with try/except and raise
-HTTPException. (Later refactor: move that to a global exception handler.)
 """
 import logging
 
 from fastapi import APIRouter
 
+from app import service
+from app.schemas import AddressCreate,AddressResponse
+
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/contacts", tags=["contacts"])
+router = APIRouter(prefix="/address", tags=["address"])
+
+# create address
+@router.post("/", response_model=AddressResponse)
+def create_address(body:AddressCreate):
+    return service.create_address(body)
+
+@router.get("/nearby",response_model=list[AddressResponse])
+def get_nearby_address(latitude:float,longitude:float):
+    return  service.get_nearby_address(latitude,longitude)
 
 
-# TODO (you implement):
-#   POST "" -> create a contact
-#       - def (SYNC), body: ContactCreate, response_model=ContactResponse, 201
-#       - return service.create_contact(payload)
-#
-#   GET "/{contact_id}" -> fetch one
-#       - def (SYNC)
-#       - try:
-#             return service.get_contact(contact_id)
-#         except ContactNotFound:
-#             raise HTTPException(status_code=404, detail=...)
+# get an address by id
+@router.get("/{address_id}",response_model=AddressResponse)
+def get_address(address_id:int):
+    return service.get_address(address_id)
+
+@router.put("/{address_id}",response_model=AddressResponse)
+def update_address(address_id :int,body:AddressCreate):
+    return  service.update_address(address_id,body)
+
+
+@router.delete("/{address_id}",status_code=204)
+def delete_address(address_id:int):
+    service.delete_address(address_id)
+
