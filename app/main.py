@@ -4,9 +4,8 @@ Run with:  uvicorn app.main:app --reload
 """
 import logging
 
-from fastapi import FastAPI
-from starlette.requests import Request
-from starlette.responses import JSONResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
 from .database import init_db
 from .exceptions import AddressNotFound
@@ -19,7 +18,7 @@ app = FastAPI(title="Address Book")
 
 #handle the exceptions
 @app.exception_handler(AddressNotFound)
-def address_not_found_handler(request:Request,exc:AddressNotFound):
+def address_not_found_handler(request: Request, exc: AddressNotFound):
     return JSONResponse(status_code=404,
                         content={"detail":str(exc)}
     )
