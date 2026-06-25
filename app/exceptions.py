@@ -12,7 +12,3 @@ class AddressNotFound(AddressError):
      def __init__(self,address_id:int):
          self.address_id = address_id
          super().__init__(f"Address {address_id} not found")
-
-class NoAddressFound(AddressError):
-    def __init__(self):
-        super().__init__("No address found")

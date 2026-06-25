@@ -4,7 +4,7 @@ import logging
 import math
 
 from . import repository
-from .exceptions import AddressNotFound, NoAddressFound
+from .exceptions import AddressNotFound
 from .schemas import AddressCreate
 
 logger = logging.getLogger(__name__)
@@ -59,8 +59,6 @@ def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 def get_nearby_address(latitude: float, longitude: float, distance_km: float) -> list[dict]:
     logger.info("Searching addresses within %.2fkm of (%.4f, %.4f)", distance_km, latitude, longitude)
     addresses = repository.get_all()
-    if not addresses:
-        raise NoAddressFound()
     results = [
         a for a in addresses
         if _haversine_km(latitude, longitude, a["latitude"], a["longitude"]) <= distance_km
