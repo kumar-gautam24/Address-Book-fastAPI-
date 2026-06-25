@@ -23,10 +23,6 @@ def address_not_found_handler(request:Request,exc:AddressNotFound):
     return JSONResponse(status_code=404,
                         content={"detail":str(exc)}
     )
-@app.exception_handler(NoAddressFound)
-def address_not_found_handler(request:Request,exc:NoAddressFound):
-    return JSONResponse(status_code=200,
-                        content={"Message": "No Nearby address found"})
 # init the db
 init_db()
 
